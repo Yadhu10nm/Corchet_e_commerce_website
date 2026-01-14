@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crochet</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  >
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="header">
+  <div class="logo-box">
+    <img src="https://lh3.googleusercontent.com/d/1nAFFd2yTeH0ziSXYMqPa6o2ikkx5syCb
+    " alt="Logo">
+  </div>
+  <h1 class="store-title">Crochet</h1>
+</header>
+
+<!-- ================= SEARCH ================= -->
+<section class="search-section">
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search (hair accessories, bags, trending...)"
+      autocomplete="off"
+      oninput="showSuggestions()"
+    >
+    <div id="suggestions" class="suggestions"></div>
+  </div>
+  <button onclick="searchProducts()">Search</button>
+</section>
+
+<!-- ================= LOADER ================= -->
+<div id="loader" class="loader"></div>
+
+<!-- ================= PRODUCTS ================= -->
+<section class="products-section">
+  <div id="productList" class="product-list"></div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="contact-section">
+  <div class="contact-card-main">
+    <h3>Contact Us</h3>
+    <div class="contact-icons">
+      <a href="https://instagram.com/yourpage" target="_blank">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="mailto:mail@gmail.com">
+        <i class="fas fa-envelope"></i>
+      </a>
+      <a href="tel:+918111835438">
+        <i class="fas fa-phone"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  © 2026 Crochet. All rights reserved.
+</footer>
+
+<!-- ================= POPUP ================= -->
+<div id="welcomePopup" class="popup-overlay">
+  <div class="popup">
+    <h2>Welcome to Crochet 🧶</h2>
+    <p>
+      Discover handmade products crafted with love.
+      Scroll, explore, and order easily through WhatsApp 💚
+    </p>
+    <button onclick="closePopup()">Let’s Explore</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
