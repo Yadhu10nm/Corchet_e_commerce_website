@@ -17,12 +17,37 @@
 
 <!-- ================= HEADER ================= -->
 <header class="header">
+  <div class="header-particles"></div>
+
   <div class="logo-box">
-    <img src="https://lh3.googleusercontent.com/d/1nAFFd2yTeH0ziSXYMqPa6o2ikkx5syCb
-    " alt="Logo">
+    <img src="https://lh3.googleusercontent.com/d/1nAFFd2yTeH0ziSXYMqPa6o2ikkx5syCb" alt="Logo">
   </div>
+
   <h1 class="store-title">Crochet</h1>
+
+  <!-- HAMBURGER MENU -->
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- NAV MENU -->
+  <nav class="nav-menu" id="navMenu">
+    <a href="#about" onclick="closeMenu()">About</a>
+    <a href="#products" onclick="closeMenu()">Products</a>
+    <a href="#custom" onclick="closeMenu()">Custom Order</a>
+    <a href="#contact" onclick="closeMenu()">Contact</a>
+  </nav>
 </header>
+
+<!-- ================= ABOUT ================= -->
+<section class="about-section" id="about">
+  <div class="about-card">
+    <h2>🧶 Crochet</h2>
+    <p></p>
+  </div>
+</section>
 
 <!-- ================= SEARCH ================= -->
 <section class="search-section">
@@ -43,12 +68,37 @@
 <div id="loader" class="loader"></div>
 
 <!-- ================= PRODUCTS ================= -->
-<section class="products-section">
+<section class="products-section" id="products">
   <div id="productList" class="product-list"></div>
 </section>
 
+<!-- ================= CUSTOM PRODUCT ================= -->
+<section class="custom-product-section" id="custom">
+  <div class="custom-card">
+    <h2>🧶 Custom Crochet Products</h2>
+
+    <p class="custom-desc">
+      Looking for something unique?
+      Tell us your requirement and we’ll make it for you.
+    </p>
+
+    <p class="custom-price">
+      💰 Price starts from <strong>₹500</strong>
+    </p>
+
+    <textarea
+      id="customInput"
+      placeholder="Describe your requirement (color, size, design, etc...)"
+    ></textarea>
+
+    <button class="custom-order-btn" onclick="orderCustomProduct()">
+      Order Custom Product
+    </button>
+  </div>
+</section>
+
 <!-- ================= CONTACT ================= -->
-<section class="contact-section">
+<section class="contact-section" id="contact">
   <div class="contact-card-main">
     <h3>Contact Us</h3>
     <div class="contact-icons">
@@ -67,10 +117,25 @@
 
 <!-- ================= FOOTER ================= -->
 <footer class="footer">
-  © 2026 Crochet. All rights reserved.
+  <div class="footer-container">
+    <div class="footer-note">
+      <h4>Why Choose Crochet?</h4>
+      <p>
+        ✔ Handmade with care and precision<br>
+        ✔ Custom designs based on your needs<br>
+        ✔ Premium yarn and materials used<br>
+        ✔ Simple WhatsApp-based ordering<br>
+        ✔ Perfect for gifts and personal use
+      </p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 Crochet. Handmade with ❤️ | All rights reserved.
+  </div>
 </footer>
 
-<!-- ================= POPUP ================= -->
+<!-- ================= WELCOME POPUP ================= -->
 <div id="welcomePopup" class="popup-overlay">
   <div class="popup">
     <h2>Welcome to Crochet 🧶</h2>
@@ -79,6 +144,28 @@
       Scroll, explore, and order easily through WhatsApp 💚
     </p>
     <button onclick="closePopup()">Let’s Explore</button>
+  </div>
+</div>
+
+<!-- ================= HELPDESK ================= -->
+<div class="helpdesk-fab" onclick="openHelpdesk()">❓</div>
+
+<div class="helpdesk-overlay" id="helpdeskOverlay">
+  <div class="helpdesk-popup">
+    <div class="helpdesk-header">
+      <h3>🧶 Helpdesk</h3>
+      <span class="close-btn" onclick="closeHelpdesk()">✕</span>
+    </div>
+
+    <p class="helpdesk-subtitle">Click a question to get instant help</p>
+
+    <div class="helpdesk-question" onclick="showHelpAnswer(1)">🛍️ How do I view products?</div>
+    <div class="helpdesk-question" onclick="showHelpAnswer(2)">📦 How can I place an order?</div>
+    <div class="helpdesk-question" onclick="showHelpAnswer(3)">🚚 Do you deliver to all locations?</div>
+    <div class="helpdesk-question" onclick="showHelpAnswer(4)">💰 Are prices fixed?</div>
+    <div class="helpdesk-question" onclick="showHelpAnswer(5)">🎨 Can I request custom crochet items?</div>
+
+    <div id="helpdeskAnswer" class="helpdesk-answer"></div>
   </div>
 </div>
 
