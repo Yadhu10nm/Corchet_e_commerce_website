@@ -154,8 +154,8 @@ body {
   white-space: pre-line;
 
   /* 🔒 FIXED HEIGHT */
-  min-height: 300px;   /* adjust if needed */
-  max-height: 300px;
+  min-height: 320px;   /* adjust if needed */
+  max-height: 320px;
 
   overflow: hidden;    /* prevent expansion */
 }
@@ -1009,3 +1009,4 @@ body {
     right: 30px;
   }
 }
+
