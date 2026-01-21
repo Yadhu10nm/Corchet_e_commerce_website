@@ -243,7 +243,7 @@ function showHelpAnswer(id) {
       answer = "Click the 'Order on WhatsApp' button below any product. All details will be sent automatically.";
       break;
     case 3:
-      answer = "Delivery is available across India. Shipping charges depend on your location.";
+      answer = "Delivery is available across Bangalore. Shipping charges depend on your location.";
       break;
     case 4:
       answer = "Prices are fixed as shown. Custom pricing may apply for special crochet orders.";
@@ -273,7 +273,7 @@ ${input}
 Price starts from ₹500`;
 
   window.open(
-    `https://wa.me/918111835438?text=${encodeURIComponent(msg)}`,
+    `https://wa.me/919035711527?text=${encodeURIComponent(msg)}`,
     "_blank"
   );
 }
@@ -341,7 +341,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!aboutEl) return;
 
   const text = 
-  `Crochet is a handmade brand dedicated to creating elegant, durable, and
+  `Ara Crochet is a handmade brand dedicated to creating elegant, durable, and
   unique crochet products. Each item is carefully crafted using quality
   materials, attention to detail, and a passion for handmade art. From everyday accessories to custom-made designs, we believe in
   delivering products that feel personal, meaningful, and timeless.`
