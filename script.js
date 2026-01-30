@@ -6,6 +6,7 @@ const loader = document.getElementById("loader");
 const suggestionsBox = document.getElementById("suggestions");
 const popup = document.getElementById("welcomePopup");
 const searchInput = document.getElementById("searchInput");
+const typeSelect = document.getElementById("typeSelect");
 
 /*************************************************
  * GLOBAL DATA
@@ -29,8 +30,6 @@ function closePopup() {
 
 /*************************************************
  * GOOGLE DRIVE LINK CONVERTER
- * Client pastes ORIGINAL Drive link.
- * This converts it internally for <img>.
  *************************************************/
 function convertDriveLink(originalLink) {
   if (!originalLink) return "";
@@ -38,10 +37,7 @@ function convertDriveLink(originalLink) {
   const match = originalLink.match(/\/d\/([a-zA-Z0-9_-]+)/);
   if (!match || !match[1]) return originalLink;
 
-  const fileId = match[1];
-
-  // 🔥 MOST RELIABLE GOOGLE DRIVE IMAGE URL
-  return `https://lh3.googleusercontent.com/d/${fileId}`;
+  return `https://lh3.googleusercontent.com/d/${match[1]}`;
 }
 
 /*************************************************
@@ -52,9 +48,12 @@ fetch(SHEET_URL)
   .then(data => {
     allProducts = data;
 
-    // ✅ Default load: hair accessories
+    loadTypes(allProducts); // 🔥 populate dropdown
+
+    // ✅ DEFAULT LOAD
+    const defaultType = typeSelect.value;
     const defaultProducts = allProducts.filter(
-      p => p.group && p.group.toLowerCase() === "hair accessories"
+      p => p.group && p.group.toLowerCase() === defaultType
     );
 
     renderProducts(defaultProducts);
@@ -64,6 +63,47 @@ fetch(SHEET_URL)
     productList.innerHTML =
       "<p style='text-align:center'>Failed to load products</p>";
   });
+
+/*************************************************
+ * LOAD TYPES INTO DROPDOWN
+ *************************************************/
+function loadTypes(products) {
+  if (!typeSelect) return;
+
+  const types = [
+    ...new Set(
+      products
+        .map(p => p.group)
+        .filter(Boolean)
+        .map(g => g.toLowerCase())
+    )
+  ];
+
+  typeSelect.innerHTML = "";
+
+  types.forEach(type => {
+    const opt = document.createElement("option");
+    opt.value = type;
+    opt.textContent = type;
+    typeSelect.appendChild(opt);
+  });
+
+  // ✅ DEFAULT SELECT FIRST TYPE
+  typeSelect.value = types[0];
+}
+
+/*************************************************
+ * FILTER BY TYPE (DROPDOWN)
+ *************************************************/
+function filterByType() {
+  const selectedType = typeSelect.value;
+
+  const filtered = allProducts.filter(
+    p => p.group && p.group.toLowerCase() === selectedType
+  );
+
+  renderProducts(filtered);
+}
 
 /*************************************************
  * RENDER PRODUCTS
@@ -81,7 +121,6 @@ function renderProducts(list) {
     const card = document.createElement("div");
     card.className = "product-card";
 
-    // 🔥 Convert Drive link ONLY for image rendering
     const imageUrl = convertDriveLink(p.image);
 
     card.innerHTML = `
@@ -97,10 +136,10 @@ function renderProducts(list) {
         <div class="product-desc">${p.desc}</div>
 
         <button class="order-btn"
-  onclick="orderWhatsApp('${p.id}','${p.name}','${p.price}','${p.image}', this)">
-  Order on WhatsApp
-</button>
-
+          onclick="orderWhatsApp('${p.id}','${p.name}','${p.price}','${p.image}', this)">
+          Order on WhatsApp
+        </button>
+      </div>
     `;
 
     productList.appendChild(card);
@@ -108,7 +147,7 @@ function renderProducts(list) {
 }
 
 /*************************************************
- * TOGGLE PRODUCT DETAILS
+ * TOGGLE DETAILS
  *************************************************/
 function toggleDetails(btn) {
   const desc = btn.nextElementSibling;
@@ -130,7 +169,6 @@ function showSuggestions() {
     return;
   }
 
-  // Unique groups
   const groups = [
     ...new Set(
       allProducts
@@ -150,25 +188,23 @@ function showSuggestions() {
   matches.forEach(m => {
     const div = document.createElement("div");
     div.innerText = m;
-    div.onclick = () => selectSuggestion(m);
+    div.onclick = () => {
+      searchInput.value = m;
+      suggestionsBox.style.display = "none";
+      typeSelect.value = m;
+      filterByType();
+    };
     suggestionsBox.appendChild(div);
   });
 
   suggestionsBox.style.display = "block";
 }
 
-function selectSuggestion(text) {
-  searchInput.value = text;
-  suggestionsBox.style.display = "none";
-  searchProducts();
-}
-
 /*************************************************
- * SEARCH PRODUCTS
+ * SEARCH PRODUCTS (TEXT)
  *************************************************/
 function searchProducts() {
   const key = searchInput.value.toLowerCase().trim();
-
   if (!key) return;
 
   loader.style.display = "block";
@@ -185,28 +221,15 @@ function searchProducts() {
 
 /*************************************************
  * WHATSAPP ORDER
- * Sends ORIGINAL Drive link (seller friendly)
  *************************************************/
 function orderWhatsApp(id, name, price, image, btn) {
-  // Button animation
   btn.classList.add("loading");
 
-  // Fly animation dot
-  const dot = document.createElement("div");
-  dot.className = "fly-dot";
-  document.body.appendChild(dot);
-
-  const rect = btn.getBoundingClientRect();
-  dot.style.left = rect.left + rect.width / 2 + "px";
-  dot.style.top = rect.top + rect.height / 2 + "px";
-
-  // Success animation
   setTimeout(() => {
     btn.classList.remove("loading");
     btn.classList.add("success");
   }, 500);
 
-  // Open WhatsApp after animation
   setTimeout(() => {
     const msg = `Hi, I want to order:
 Product ID: ${id}
@@ -215,48 +238,15 @@ Price: ₹${price}
 Image: ${image}`;
 
     window.open(
-      `https://wa.me/919035711527?text=${encodeURIComponent(msg)}`,
+      `https://wa.me/918111835438?text=${encodeURIComponent(msg)}`,
       "_blank"
     );
-
-    dot.remove();
   }, 900);
 }
 
-function openHelpdesk() {
-  document.getElementById("helpdeskOverlay").style.display = "flex";
-}
-
-function closeHelpdesk() {
-  document.getElementById("helpdeskOverlay").style.display = "none";
-}
-
-function showHelpAnswer(id) {
-  const answerBox = document.getElementById("helpdeskAnswer");
-  let answer = "";
-
-  switch (id) {
-    case 1:
-      answer = "Browse products by scrolling or using the search bar. Products are grouped for easy access.";
-      break;
-    case 2:
-      answer = "Click the 'Order on WhatsApp' button below any product. All details will be sent automatically.";
-      break;
-    case 3:
-      answer = "Delivery is available across Bangalore. Shipping charges depend on your location.";
-      break;
-    case 4:
-      answer = "Prices are fixed as shown. Custom pricing may apply for special crochet orders.";
-      break;
-    case 5:
-      answer = "Yes, custom crochet items can be requested based on availability.";
-      break;
-  }
-
-  answerBox.innerText = answer;
-  answerBox.style.display = "block";
-}
-
+/*************************************************
+ * CUSTOM PRODUCT ORDER
+ *************************************************/
 function orderCustomProduct() {
   const input = document.getElementById("customInput").value.trim();
 
@@ -273,116 +263,39 @@ ${input}
 Price starts from ₹500`;
 
   window.open(
-    `https://wa.me/919035711527?text=${encodeURIComponent(msg)}`,
+    `https://wa.me/918111835438?text=${encodeURIComponent(msg)}`,
     "_blank"
   );
 }
 
-// ================= HEADER PARTICLE EFFECT =================
+/*************************************************
+ * HELPDESK
+ *************************************************/
+function openHelpdesk() {
+  document.getElementById("helpdeskOverlay").style.display = "flex";
+}
 
-// Run only after DOM is fully loaded
-document.addEventListener("DOMContentLoaded", () => {
-  const headerParticles = document.querySelector(".header-particles");
+function closeHelpdesk() {
+  document.getElementById("helpdeskOverlay").style.display = "none";
+}
 
-  // Safety check (prevents JS errors)
-  if (!headerParticles) return;
+function showHelpAnswer(id) {
+  const box = document.getElementById("helpdeskAnswer");
+  const answers = {
+    1: "Browse products using category filter or search bar.",
+    2: "Click Order on WhatsApp. Details are sent automatically.",
+    3: "Delivery available across India.",
+    4: "Prices shown are fixed. Custom orders may vary.",
+    5: "Yes, custom crochet products are supported."
+  };
 
-  /* THREAD LINES (BACKGROUND TEXTURE) */
-  function createThreadLine() {
-    const line = document.createElement("div");
-    line.className = "thread-line";
+  box.innerText = answers[id] || "";
+  box.style.display = "block";
+}
 
-    line.style.left = Math.random() * 100 + "%";
-    line.style.animationDuration = (2 + Math.random() * 2) + "s";
-    line.style.opacity = (0.3 + Math.random() * 0.4).toFixed(2);
-
-    headerParticles.appendChild(line);
-
-    // Auto cleanup
-    setTimeout(() => {
-      line.remove();
-    }, 4000);
-  }
-
-  /* 🧶 THREAD BALL EMOJI (FOREGROUND BRAND ELEMENT) */
-  function createThreadEmoji() {
-    const emoji = document.createElement("div");
-    emoji.className = "thread-emoji";
-    emoji.textContent = "🧶";
-
-    emoji.style.left = Math.random() * 100 + "%";
-    emoji.style.fontSize = (14 + Math.random() * 10) + "px";
-    emoji.style.animationDuration = (3 + Math.random() * 3) + "s";
-
-    headerParticles.appendChild(emoji);
-
-    // Auto cleanup
-    setTimeout(() => {
-      emoji.remove();
-    }, 6000);
-  }
-
-  /* INTERVAL CONTROLS (BALANCED FOR PERFORMANCE) */
-  const lineInterval = setInterval(createThreadLine, 220);
-  const emojiInterval = setInterval(createThreadEmoji, 450);
-
-  /* OPTIONAL: Pause animation when tab is inactive */
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      clearInterval(lineInterval);
-      clearInterval(emojiInterval);
-    }
-  });
-});
-
-// ================= ABOUT SECTION SINGLE LINE TYPE → ERASE → LOOP =================
-document.addEventListener("DOMContentLoaded", () => {
-  const aboutEl = document.querySelector(".about-card p");
-  if (!aboutEl) return;
-
-  const text = 
-  `Ara Crochet is a handmade brand dedicated to creating elegant, durable, and
-  unique crochet products. Each item is carefully crafted using quality
-  materials, attention to detail, and a passion for handmade art. From everyday accessories to custom-made designs, we believe in
-  delivering products that feel personal, meaningful, and timeless.`
-  let charIndex = 0;
-  let isDeleting = false;
-
-  const typingSpeed = 35;   // typing speed
-  const deletingSpeed = 20; // deleting speed
-  const pauseAfterType = 1200;
-  const pauseAfterDelete = 600;
-
-  function animate() {
-    if (!isDeleting) {
-      // Typing
-      aboutEl.textContent = text.substring(0, charIndex + 1);
-      charIndex++;
-
-      if (charIndex === text.length) {
-        setTimeout(() => (isDeleting = true), pauseAfterType);
-      }
-    } else {
-      // Deleting
-      aboutEl.textContent = text.substring(0, charIndex - 1);
-      charIndex--;
-
-      if (charIndex === 0) {
-        isDeleting = false;
-        setTimeout(() => {}, pauseAfterDelete);
-      }
-    }
-
-    setTimeout(
-      animate,
-      isDeleting ? deletingSpeed : typingSpeed
-    );
-  }
-
-  animate();
-});
-
-// ================= NAV MENU =================
+/*************************************************
+ * NAV MENU
+ *************************************************/
 function toggleMenu() {
   document.getElementById("navMenu").classList.toggle("show");
 }
