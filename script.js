@@ -238,7 +238,7 @@ Price: ₹${price}
 Image: ${image}`;
 
     window.open(
-      `https://wa.me/918111835438?text=${encodeURIComponent(msg)}`,
+      `https://wa.me/919035711527?text=${encodeURIComponent(msg)}`,
       "_blank"
     );
   }, 900);
@@ -263,7 +263,7 @@ ${input}
 Price starts from ₹500`;
 
   window.open(
-    `https://wa.me/918111835438?text=${encodeURIComponent(msg)}`,
+    `https://wa.me/919035711527?text=${encodeURIComponent(msg)}`,
     "_blank"
   );
 }
@@ -303,3 +303,48 @@ function toggleMenu() {
 function closeMenu() {
   document.getElementById("navMenu").classList.remove("show");
 }
+ * ABOUT SECTION TYPING EFFECT
+ * Single line | Type → Pause → Erase → Loop
+ *************************************************/
+document.addEventListener("DOMContentLoaded", () => {
+  const aboutEl = document.querySelector(".about-card p");
+  if (!aboutEl) return;
+
+  const text =
+  "Crochet is a handmade brand dedicated to creating elegant, durable, and unique crochet products. Every piece is thoughtfully designed and carefully handcrafted using premium yarns and quality materials. From everyday accessories to custom-made creations, we focus on comfort, style, and attention to detail. Our mission is to deliver meaningful products that feel personal, timeless, and made with love.";
+
+  let charIndex = 0;
+  let isDeleting = false;
+
+  const typingSpeed = 35;
+  const deletingSpeed = 20;
+  const pauseAfterType = 1200;
+  const pauseAfterDelete = 600;
+
+  function typeLoop() {
+    if (!isDeleting) {
+      aboutEl.textContent = text.substring(0, charIndex + 1);
+      charIndex++;
+
+      if (charIndex === text.length) {
+        setTimeout(() => (isDeleting = true), pauseAfterType);
+      }
+    } else {
+      aboutEl.textContent = text.substring(0, charIndex - 1);
+      charIndex--;
+
+      if (charIndex === 0) {
+        isDeleting = false;
+        setTimeout(() => {}, pauseAfterDelete);
+      }
+    }
+
+    setTimeout(
+      typeLoop,
+      isDeleting ? deletingSpeed : typingSpeed
+    );
+  }
+
+  typeLoop();
+});
+
