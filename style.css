@@ -1010,3 +1010,69 @@ body {
   }
 }
 
+/* ================= TYPE FILTER – PREMIUM NEON ================= */
+.filter-section {
+  display: flex;
+  justify-content: center;
+  padding: 16px 15px 26px;
+}
+
+/* SELECT */
+#typeSelect {
+  padding: 14px 22px;
+  min-width: 280px;
+  border-radius: 30px;
+
+  border: 1px solid rgba(79, 70, 229, 0.35);
+  background: linear-gradient(180deg, #ffffff, #f8f9ff);
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f2937;
+
+  cursor: pointer;
+  outline: none;
+
+  /* GLOW + DEPTH */
+  box-shadow:
+    0 8px 25px rgba(79,70,229,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.7);
+
+  transition:
+    border 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.25s ease;
+}
+
+/* HOVER EFFECT */
+#typeSelect:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 40px rgba(79,70,229,0.25),
+    0 0 20px rgba(99,102,241,0.35);
+}
+
+/* FOCUS / ACTIVE */
+#typeSelect:focus {
+  border-color: #6366f1;
+
+  box-shadow:
+    0 0 0 4px rgba(99,102,241,0.18),
+    0 0 35px rgba(99,102,241,0.55);
+
+  transform: translateY(-2px);
+}
+
+/* OPTIONAL – REMOVE DEFAULT ARROW (CLEAN LOOK) */
+#typeSelect {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #6366f1 50%),
+    linear-gradient(135deg, #6366f1 50%, transparent 50%);
+  background-position:
+    calc(100% - 22px) calc(50% - 4px),
+    calc(100% - 16px) calc(50% - 4px);
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+
