@@ -238,7 +238,7 @@ Price: ₹${price}
 Image: ${image}`;
 
     window.open(
-      `https://wa.me/918111835438?text=${encodeURIComponent(msg)}`,
+      `https://wa.me/919035711527?text=${encodeURIComponent(msg)}`,
       "_blank"
     );
   }, 900);
@@ -263,7 +263,7 @@ ${input}
 Price starts from ₹500`;
 
   window.open(
-    `https://wa.me/918111835438?text=${encodeURIComponent(msg)}`,
+    `https://wa.me/919035711527?text=${encodeURIComponent(msg)}`,
     "_blank"
   );
 }
@@ -349,3 +349,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   typeLoop();
 });
+
